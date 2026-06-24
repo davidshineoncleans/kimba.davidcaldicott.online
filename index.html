@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KIMBA — a somatic practice · David Caldicott</title>
+  <meta name="description" content="KIMBA is a body-first practice for meeting what you've been carrying — overwhelm, old stress, the things words can't reach. Start free with the 5-Minute Reset and the KIMBA Starter Pack." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Outfit:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #13100d;
+      --bg-section: #1a1410;
+      --bg-card:    #1c1712;
+      --border:     rgba(200,155,80,0.15);
+      --border-mid: rgba(200,155,80,0.3);
+      --gold:       #c89b50;
+      --gold-light: #e8c278;
+      --cream:      #f0e6d3;
+      --muted:      #8a7d6a;
+      --soft:       rgba(240,230,211,0.65);
+      --serif: 'Cormorant Garamond','Lora',Georgia,serif;
+      --sans:  'Outfit','Poppins',system-ui,sans-serif;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: var(--sans);
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+    body { max-width: 660px; margin: 0 auto; padding-bottom: 4rem; position: relative; overflow-x: hidden; }
+
+    /* ── DOT FIELD (background canvas) ── */
+    #dotfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    body > * { position: relative; z-index: 1; }
+
+    /* ── NAV ── */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.5rem 2rem; border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { font-family: var(--serif); font-size: 1rem; font-weight: 300; color: var(--cream); text-decoration: none; letter-spacing: 0.04em; }
+    .nav-brand em { font-style: italic; color: var(--gold-light); }
+    .nav-back { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+    .nav-back:hover { color: var(--gold); }
+
+    /* ── SECTIONS ── */
+    section { padding: 3.5rem 2rem; }
+    section + section { border-top: 1px solid var(--border); }
+
+    .eyebrow { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+
+    h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2.5rem, 8vw, 3.5rem); line-height: 1.08; color: var(--cream); margin-bottom: 1.4rem; letter-spacing: -0.01em; }
+    h1 em { font-style: italic; color: var(--gold-light); }
+
+    h2 { font-family: var(--serif); font-weight: 300; font-size: 1.8rem; line-height: 1.2; color: var(--cream); margin-bottom: 1rem; }
+    h2 em { font-style: italic; color: var(--gold-light); }
+
+    h3 { font-family: var(--serif); font-weight: 500; font-size: 1.4rem; color: var(--cream); line-height: 1.2; margin-bottom: 0.4rem; }
+    h3 em { font-style: italic; color: var(--gold-light); }
+
+    p { font-size: 0.97rem; line-height: 1.8; color: rgba(240,230,211,0.8); margin-bottom: 1rem; }
+    p b, p strong { color: var(--cream); font-weight: 400; }
+    p em { font-style: italic; color: var(--gold-light); }
+
+    .lead { font-family: var(--serif); font-style: italic; font-size: 1.18rem; color: var(--soft); line-height: 1.7; }
+
+    .divider { width: 48px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 2rem 0; }
+    .label { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+
+    /* ── IMAGE BANDS (baked gold-duotone JPGs + dark overlay) ── */
+    .band { position: relative; min-height: 62vh; display: flex; align-items: flex-end; padding: 2.5rem 2rem; background-size: cover; background-position: center 60%; }
+    .band::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(19,16,13,0.6) 0%, rgba(19,16,13,0.3) 30%, rgba(19,16,13,0.78) 70%, rgba(19,16,13,0.95) 100%); }
+    .band > * { position: relative; z-index: 2; }
+    .band h1, .band h2, .band .lead, .band p, .band .eyebrow { text-shadow: 0 1px 14px rgba(8,6,4,0.85); }
+    .band-hero { background-image: url('kimba-hero.jpg'); min-height: 78vh; }
+    .band-inner { width: 100%; }
+
+    /* ── FRAMED PHOTOS (portrait / square shots shown natively) ── */
+    figure.photo { margin: 1.7rem auto 0; max-width: 440px; }
+    figure.photo.square { max-width: 480px; }
+    figure.photo img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--border-mid); box-shadow: 0 18px 50px rgba(0,0,0,0.5); }
+    figure.photo figcaption { font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-align: center; margin-top: 0.8rem; }
+    .photo-row { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 1.7rem; }
+    .photo-row figure.photo { margin-top: 0; flex: 1 1 240px; max-width: 320px; }
+
+    /* ── BUTTONS ── */
+    .cta-row { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.8rem; }
+    .cta-btn {
+      display: inline-block; padding: 0.9em 1.9em; border: 1px solid var(--gold); border-radius: 8px;
+      color: var(--gold); background: transparent; font-family: var(--sans); font-size: 0.85rem; font-weight: 400;
+      letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background 0.2s, color 0.2s;
+    }
+    .cta-btn:hover { background: var(--gold); color: var(--bg); }
+    .cta-btn.solid { background: linear-gradient(180deg, var(--gold-light), var(--gold)); color: #1a1208; border-color: transparent; font-weight: 500; }
+    .cta-btn.solid:hover { filter: brightness(1.07); }
+    .cta-btn.quiet { border-color: var(--border-mid); color: var(--soft); }
+    .cta-btn.quiet:hover { background: transparent; color: var(--gold); border-color: var(--gold); }
+
+    /* ── STEPS ── */
+    .steps { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 1.6rem; }
+    .step { background: linear-gradient(180deg, var(--bg-section), var(--bg-card)); border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem 1.4rem; display: flex; gap: 1.1rem; align-items: flex-start; transition: border-color 0.4s ease; }
+    .step:hover { border-color: var(--border-mid); }
+    .step .num { flex: none; width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--gold); color: var(--gold-light); font-family: var(--serif); font-size: 1.25rem; display: flex; align-items: center; justify-content: center; }
+    .step .stepbody h3 { font-size: 1.25rem; margin-bottom: 0.25rem; }
+    .step .stepbody p { font-size: 0.92rem; line-height: 1.65; margin: 0; }
+
+    /* ── PACK LIST ── */
+    .pack { background: var(--bg-card); border: 1px solid var(--border-mid); border-radius: 14px; padding: 1.8rem; margin-top: 1.6rem; }
+    .pack ul { list-style: none; margin: 0.4rem 0 0; }
+    .pack li { position: relative; padding: 0.55rem 0 0.55rem 1.6rem; font-size: 0.95rem; color: rgba(240,230,211,0.85); line-height: 1.55; border-bottom: 1px solid var(--border); }
+    .pack li:last-child { border-bottom: 0; }
+    .pack li::before { content: ""; position: absolute; left: 0; top: 1.05rem; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-light); }
+    .pack li b { color: var(--cream); font-weight: 500; }
+    .free-chip { display: inline-block; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--border-mid); border-radius: 999px; padding: 0.25em 0.85em; margin-bottom: 1rem; }
+
+    /* ── OPT-IN ── */
+    .optin { background: radial-gradient(140% 120% at 50% 0%, rgba(200,155,80,0.08), transparent 60%), var(--bg-section); text-align: center; }
+    .optin h2 { font-size: clamp(1.9rem, 6vw, 2.6rem); }
+    .optin p { max-width: 480px; margin-left: auto; margin-right: auto; }
+    .capture-form { margin: 1.8rem auto 0; display: flex; gap: 0.6rem; max-width: 460px; flex-wrap: wrap; justify-content: center; }
+    .capture-form input[type="email"] { flex: 1 1 240px; min-width: 0; background: var(--bg); border: 1px solid var(--border-mid); border-radius: 10px; padding: 0.95em 1.1em; color: var(--cream); font: inherit; font-size: 0.92rem; }
+    .capture-form input[type="email"]:focus { outline: none; border-color: var(--gold); }
+    .capture-form input[type="email"]::placeholder { color: var(--muted); }
+    .hp { position: absolute; left: -9999px; opacity: 0; }
+    .fineprint { font-size: 0.78rem; color: var(--muted); margin-top: 1rem; letter-spacing: 0.02em; }
+    .capture-msg { font-family: var(--serif); font-style: italic; font-size: 1.1rem; color: var(--gold-light); display: none; margin-top: 1.2rem; }
+
+    /* ── DISCOVERY / CLOSING ── */
+    .softlink { display: inline-block; margin-top: 0.4rem; font-family: var(--serif); font-style: italic; font-size: 1.2rem; color: var(--gold-light); text-decoration: none; border-bottom: 1px solid var(--border-mid); padding-bottom: 2px; }
+    .softlink:hover { color: var(--gold); }
+
+    .safety { font-size: 0.82rem; color: var(--muted); line-height: 1.65; border-left: 2.5px solid var(--border-mid); padding-left: 1rem; max-width: 540px; }
+
+    footer { text-align: center; padding: 2.8rem 2rem 1rem; border-top: 1px solid var(--border); }
+    footer .mark { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--gold); }
+    footer .tagline { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 0.8rem; }
+
+    /* reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } #dotfield { display: none; } }
+
+    @media (max-width: 560px) {
+      section, nav { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .band { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="dotfield" aria-hidden="true"></canvas>
+
+  <nav>
+    <a class="nav-brand" href="https://davidcaldicott.online">David <em>Caldicott</em></a>
+    <a class="nav-back" href="https://meet.davidcaldicott.online">← All paths</a>
+  </nav>
+
+  <!-- HERO BAND -->
+  <div class="band band-hero">
+    <div class="band-inner">
+      <div class="eyebrow">KIMBA · a somatic practice</div>
+      <h1>Your body has been<br>carrying it. <em>KIMBA</em> is<br>how you set it down.</h1>
+      <p class="lead">The overwhelm, the tight chest, the old stress that talking never quite reached — it doesn't live in your thoughts. It lives in your body. So that's where we meet it.</p>
+      <div class="cta-row">
+        <a class="cta-btn solid" href="#starter">Get the free Starter Pack</a>
+        <a class="cta-btn quiet" href="#conversation">Book a free conversation</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT IS KIMBA -->
+  <section class="reveal">
+    <div class="label">What KIMBA is</div>
+    <h2>A way of <em>listening</em> to the body — and answering it.</h2>
+    <p><strong>KIMBA</strong> — Kinesthetic Internal Memory Balancing Action — is a body-first practice I've been building and teaching for over a decade. The premise is simple, and it's the opposite of what most of us were taught: <em>you are not the problem. You are the answer.</em></p>
+    <p>What you've been carrying isn't a flaw to fix or a story to talk your way out of. It's tension, memory and stress held in the body — and the body knows how to let it move, when it's met with patience instead of pressure. KIMBA is the structure for that meeting: breath, attention, movement, and a few honest minutes with yourself.</p>
+    <p>No app to subscribe to. No performing wellness. No permission needed. Just you, your own body, and a practice you keep for life.</p>
+  </section>
+
+  <!-- THE PRACTICE — tree as partner -->
+  <section class="reveal">
+    <div class="label">The practice</div>
+    <h2>Some of the deepest work happens leaning on a <em>living thing</em>.</h2>
+    <figure class="photo">
+      <img src="kimba-tree.jpg" alt="David inverted against a pine trunk, hands and feet pressed to the bark" loading="lazy">
+      <figcaption>Pushing into the pine — depth through resistance</figcaption>
+    </figure>
+    <p>At its fullest, KIMBA is done with a partner that can take your weight — often a tree. The trunk gives the body something to push against, so it can open further than it ever could unsupported. Depth comes from resistance, not flexibility.</p>
+    <p>But it's more than leverage. The tree is alive — old, patient, a witness. The practice is reciprocal: you ask before you lean, and you give something back. That's the spirit of the whole method. You're not forcing anything. You're in conversation with it.</p>
+    <figure class="photo square">
+      <img src="kimba-arch.jpg" alt="David in a shirtless press-handstand framed by a ruined flint arch" loading="lazy">
+      <figcaption>Years in the body — the practice is real</figcaption>
+    </figure>
+  </section>
+
+  <!-- THE 5-MINUTE RESET -->
+  <section class="reveal">
+    <div class="label">Start here — free, right now</div>
+    <h2>The 5-Minute <em>Reset</em></h2>
+    <p>You don't need a tree, a mat, or a spare hour to begin. When the turbulence rises and you feel that wave of <b>"I can't"</b> — this is the practice you can do anywhere, in five minutes, with nothing but your own breath.</p>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div class="stepbody"><h3>Sit Down</h3><p>Stop moving. Feel where your body meets the chair or floor. Five slow breaths — longer on the way out than the way in.</p></div></div>
+      <div class="step"><div class="num">2</div><div class="stepbody"><h3>Face It</h3><p>Ask: <em>where am I feeling this?</em> Chest, throat, shoulders, stomach. Don't fix it — just find it. A hand there, if you like.</p></div></div>
+      <div class="step"><div class="num">3</div><div class="stepbody"><h3>Let It Hurt</h3><p>Keep breathing slow and steady, right into that spot. Let the feeling be there without arguing with it. That's what lets it move.</p></div></div>
+      <div class="step"><div class="num">4</div><div class="stepbody"><h3>Let It Go</h3><p>On a long out-breath, let it soften. Quietly, to the part of you carrying it: <em>"I know. I've got you. We're safe right now."</em></p></div></div>
+      <div class="step"><div class="num">5</div><div class="stepbody"><h3>Take A Moment</h3><p>Hand on the spot, feel the warmth, three more breaths. Notice anything that's loosened — then carry on, a touch more steady.</p></div></div>
+    </div>
+    <p class="lead" style="text-align:center; margin-top:2rem;">That's the whole thing. The more you use it, the faster it works — your body learns it can trust you to meet it.</p>
+  </section>
+
+  <!-- THE STARTER PACK / OPT-IN -->
+  <section class="optin reveal" id="starter">
+    <span class="free-chip">Free · no catch</span>
+    <h2>The KIMBA <em>Starter Pack</em></h2>
+    <p>The Reset is one practice. The Starter Pack is the whole foundation — yours to keep, free.</p>
+    <div class="pack" style="text-align:left; max-width:480px; margin-left:auto; margin-right:auto;">
+      <ul>
+        <li><b>The 5-Minute Reset</b> — the practice above, laid out to keep</li>
+        <li><b>The full 7 Steps</b> — the complete KIMBA sequence, explained simply</li>
+        <li><b>A one-page cheatsheet</b> — sized for your phone, for the moment you need it</li>
+      </ul>
+    </div>
+    <p style="margin-top:1.6rem;">Pop your email in and I'll send the PDF straight over.</p>
+    <!-- WIRING: posts to CONFIG.captureWebhook = n8n KIMBA_Starterpack_Capture (/webhook/kimba-capture). Tags subscriber 'kimba-starterpack'. A Sequenzy automation on that tag emails the pack PDF (David to build). CORS allowedOrigins already includes https://kimba.davidcaldicott.online in the import JSON. -->
+    <form class="capture-form" id="capture-form" novalidate>
+      <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input type="email" name="email" id="capture-email" placeholder="your@email.com" required aria-label="Your email address">
+      <button class="cta-btn solid" type="submit">Send me the pack</button>
+    </form>
+    <p class="capture-msg" id="capture-ok">On its way — check your inbox in a moment. 🤍</p>
+    <p class="capture-msg" id="capture-err" style="color:var(--muted);">That didn't go through — try again, or come back another time.</p>
+    <p class="fineprint">One email with your pack, and the occasional gentle note. Unsubscribe anytime.</p>
+  </section>
+
+  <!-- WHO IS DAVID -->
+  <section class="reveal">
+    <div class="label">Who's behind it</div>
+    <h2>I'm <em>David</em>.</h2>
+    <p>I've spent more than ten years on one question: how do we stop performing a version of ourselves that isn't quite us, and come home to the real thing? KIMBA is the body half of that answer — the practice I return to, teach, and have watched change how people carry themselves.</p>
+    <p>I'm not a clinician, and KIMBA isn't therapy. It's a practice — steady, honest, and yours. I'll meet you where you are, at your pace, only ever as far as feels safe.</p>
+  </section>
+
+  <!-- DISCOVERY — closing -->
+  <section class="optin reveal" id="conversation">
+    <div class="label" style="text-align:center;">Go deeper, if you want to</div>
+    <figure class="photo">
+      <img src="kimba-cathedral.jpg" alt="David in a handstand on the grass below a cathedral tower" loading="lazy">
+      <figcaption>Bury St Edmunds</figcaption>
+    </figure>
+    <h2 style="margin-top:1.6rem;">A quiet conversation — no pitch.</h2>
+    <p>If a part of you wants to go further — to understand what your body's been holding, with someone steady alongside you — that's the work I do. Thirty minutes, free, no pressure. Just to see if it's a fit.</p>
+    <a class="softlink" id="discovery-link" href="https://meet.davidcaldicott.online">Come and say hello →</a>
+  </section>
+
+  <!-- SAFETY -->
+  <section class="reveal">
+    <p class="safety">Your pace. Your body. Only ever as far as feels safe — you can slow down, soften, or stop at any moment. KIMBA is a self-help practice and sits alongside any clinical care you have; it doesn't replace it. If you're in crisis, please reach out to a professional or a trusted person.</p>
+  </section>
+
+  <footer>
+    <div class="mark">Connect Your Dots</div>
+    <div class="tagline">You are not the problem. You are the answer.</div>
+  </footer>
+
+  <script>
+  /* ============================================================
+     CONFIG — David: set these before publishing.
+     Mirrors the connect.davidcaldicott.online CONFIG pattern.
+     ============================================================ */
+  const CONFIG = {
+    calBase:        "https://cal.com/davidcaldicott",
+    calDiscovery:   "discovery",                 // 30-min Discovery event slug
+    meetUrl:        "https://meet.davidcaldicott.online",  // discovery destination (current)
+    captureWebhook: "https://shineoncleans.app.n8n.cloud/webhook/kimba-capture", // KIMBA_Starterpack_Capture (import the n8n JSON + activate)
+    starterSource:  "kimba-starterpack",         // tag/source written on capture
+    page:           "kimba"
+  };
+
+  // Point the discovery link straight at Cal if you'd rather skip the meet page:
+  // document.getElementById('discovery-link').href = CONFIG.calBase + '/' + CONFIG.calDiscovery;
+
+  /* ── Email capture (Starter Pack) ── */
+  document.getElementById('capture-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = e.target;
+    if (form.company.value) return; // honeypot
+    const email = form.email.value.trim();
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { form.email.focus(); return; }
+    const ok = document.getElementById('capture-ok'), err = document.getElementById('capture-err');
+    ok.style.display = 'none'; err.style.display = 'none';
+    try {
+      const res = await fetch(CONFIG.captureWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: CONFIG.starterSource, page: CONFIG.page, ts: new Date().toISOString() })
+      });
+      if (!res.ok) throw new Error();
+      ok.style.display = 'block';
+      form.style.display = 'none';
+    } catch (_) {
+      err.style.display = 'block';
+    }
+  });
+
+  /* ── Reveal on scroll ── */
+  const io = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* ── Dot field — the living background (from CYD live site) ── */
+  (function dotfield() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const cv = document.getElementById('dotfield');
+    const ctx = cv.getContext('2d');
+    let W, H, dots = [], raf = null;
+    const mouse = { x: -9999, y: -9999 };
+    const N = Math.min(70, Math.floor(window.innerWidth / 14));
+    const LINK = 110;
+    function size() { W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
+    function seed() { dots = Array.from({ length: N }, () => ({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.18, vy: (Math.random()-0.5)*0.18, r: 0.8 + Math.random()*1.4 })); }
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+      for (const d of dots) {
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < 0 || d.x > W) d.vx *= -1;
+        if (d.y < 0 || d.y > H) d.vy *= -1;
+        const near = Math.hypot(d.x - mouse.x, d.y - mouse.y) < LINK;
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 7);
+        ctx.fillStyle = near ? 'rgba(232,194,120,0.8)' : 'rgba(200,155,80,0.35)';
+        ctx.fill();
+      }
+      const near = dots.filter(d => Math.hypot(d.x - mouse.x, d.y - mouse.y) < LINK);
+      ctx.strokeStyle = 'rgba(200,155,80,0.22)'; ctx.lineWidth = 0.6;
+      for (let i = 0; i < near.length; i++)
+        for (let j = i + 1; j < near.length; j++) {
+          ctx.beginPath(); ctx.moveTo(near[i].x, near[i].y); ctx.lineTo(near[j].x, near[j].y); ctx.stroke();
+        }
+      raf = requestAnimationFrame(tick);
+    }
+    window.addEventListener('resize', () => { size(); seed(); });
+    window.addEventListener('pointermove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener('pointerleave', () => { mouse.x = -9999; mouse.y = -9999; });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) { cancelAnimationFrame(raf); raf = null; } else if (!raf) tick(); });
+    size(); seed(); tick();
+  })();
+  </script>
+</body>
+</html>
